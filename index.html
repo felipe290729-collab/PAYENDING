@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FELIPE PAYMENT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(to right, #2575fc, #6a11cb);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        .content-wrapper {
+            display: flex;
+            min-height: 500px;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 220px;
+            background-color: #f8f9fa;
+            padding: 25px 0;
+            border-right: 1px solid #eee;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            padding: 18px 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            color: #555;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .nav-btn:hover {
+            background-color: #e9ecef;
+            color: #2575fc;
+        }
+
+        .nav-btn.active {
+            border-left: 4px solid #6a11cb;
+            background-color: #e9ecef;
+            color: #6a11cb;
+        }
+
+        .nav-btn i {
+            margin-right: 12px;
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            color: #6a11cb;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            font-size: 1.8rem;
+        }
+
+        /* Payment Section */
+        .payment-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .payment-method {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #2575fc;
+        }
+
+        .payment-method h3 {
+            color: #2575fc;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .payment-method h3 i {
+            margin-right: 10px;
+        }
+
+        .payment-number {
+            background-color: white;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copy-btn {
+            background-color: #2575fc;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background 0.3s;
+        }
+
+        .copy-btn:hover {
+            background-color: #6a11cb;
+        }
+
+        .qris-container {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .qris-image {
+            width: 250px;
+            height: 250px;
+            margin: 0 auto 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f5f5f5;
+        }
+
+        .qris-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .upload-info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        /* Rules Section */
+        .rules-container {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .rules-image-container {
+            width: 100%;
+            max-height: 400px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f5f5f5;
+        }
+
+        .rules-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(to right, #2575fc, #6a11cb);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 15px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+        }
+
+        /* Group Section */
+        .group-list {
+            list-style: none;
+        }
+
+        .group-item {
+            background: #f8f9fa;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+            border-left: 4px solid #6a11cb;
+        }
+
+        .group-title {
+            background-color: #eef2ff;
+            padding: 15px 20px;
+            font-weight: 600;
+            color: #6a11cb;
+        }
+
+        .group-link {
+            display: block;
+            padding: 15px 20px;
+            text-decoration: none;
+            color: #2575fc;
+            transition: background 0.3s;
+        }
+
+        .group-link:hover {
+            background-color: #e9ecef;
+        }
+
+        .group-link i {
+            margin-right: 10px;
+            color: #6a11cb;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .felipe-brand {
+            color: #6a11cb;
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                padding: 0;
+                display: flex;
+                border-right: none;
+                border-bottom: 1px solid #eee;
+            }
+            
+            .nav-btn {
+                flex: 1;
+                justify-content: center;
+                padding: 15px 10px;
+                border-left: none;
+                border-bottom: 4px solid transparent;
+            }
+            
+            .nav-btn.active {
+                border-left: none;
+                border-bottom: 4px solid #6a11cb;
+            }
+            
+            .payment-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .qris-image {
+                width: 200px;
+                height: 200px;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-wallet"></i> FELIPE PAYMENT</h1>
+            <p>Pembayaran cepat dan aman untuk semua kebutuhan Anda</p>
+        </header>
+        
+        <div class="content-wrapper">
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar">
+                <a href="#" class="nav-btn active" data-target="payment">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Payment</span>
+                </a>
+                <a href="#" class="nav-btn" data-target="rules">
+                    <i class="fas fa-book"></i>
+                    <span>Rules</span>
+                </a>
+                <a href="#" class="nav-btn" data-target="group">
+                    <i class="fas fa-users"></i>
+                    <span>Grup Felipe</span>
+                </a>
+            </nav>
+            
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Payment Section -->
+                <section id="payment" class="content-section active">
+                    <h2 class="section-title"><i class="fas fa-money-bill-wave"></i> Payment Methods</h2>
+                    
+                    <div class="payment-options">
+                        <div class="payment-method">
+                            <h3><i class="fab fa-google-wallet"></i> Dana</h3>
+                            <p>Transfer ke nomor Dana berikut:</p>
+                            <div class="payment-number">
+                                <span id="dana-number">081223823892</span>
+                                <button class="copy-btn" data-number="081223823892">
+                                    <i class="fas fa-copy"></i> Salin
+                                </button>
+                            </div>
+                            <p class="upload-info">Setelah transfer, harap kirim bukti ke admin.</p>
+                        </div>
+                        
+                        <div class="payment-method">
+                            <h3><i class="fas fa-mobile-alt"></i> GoPay</h3>
+                            <p>Transfer ke nomor GoPay berikut:</p>
+                            <div class="payment-number">
+                                <span id="gopay-number">081223823892</span>
+                                <button class="copy-btn" data-number="081223823892">
+                                    <i class="fas fa-copy"></i> Salin
+                                </button>
+                            </div>
+                            <p class="upload-info">Pastikan nomor tujuan sudah benar.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="qris-container">
+                        <h3><i class="fas fa-qrcode"></i> QRIS Payment</h3>
+                        <p>Scan QR Code berikut untuk pembayaran:</p>
+                        
+                        <div class="qris-image">
+                            <!-- Ganti dengan gambar QRIS Anda -->
+                            <img src="qris.png" alt="QRIS Felipe Payment" id="qris-img">
+                        </div>
+                        
+                        <p class="upload-info">
+                            <strong>Catatan:</strong> Pastikan file <strong>qris.png</strong> berada di folder yang sama dengan file index.html ini.
+                        </p>
+                    </div>
+                </section>
+                
+                <!-- Rules Section -->
+                <section id="rules" class="content-section">
+                    <h2 class="section-title"><i class="fas fa-clipboard-list"></i> Rules & Ketentuan</h2>
+                    
+                    <div class="rules-container">
+                        <p>Berikut adalah rules dan ketentuan yang harus diikuti:</p>
+                        
+                        <div class="rules-image-container">
+                            <!-- Ganti dengan gambar rules Anda -->
+                            <img src="rules.png" alt="Rules Felipe" id="rules-img">
+                        </div>
+                        
+                        <p class="upload-info">
+                            <strong>Catatan:</strong> Pastikan file <strong>rules.png</strong> berada di folder yang sama dengan file index.html ini.
+                        </p>
+                        
+                        <p>Untuk mendownload gambar rules, klik kanan pada gambar di atas dan pilih "Save Image As".</p>
+                        
+                        <a href="rules.png" download="rules_felipe.png" class="download-btn">
+                            <i class="fas fa-download"></i> Download Rules
+                        </a>
+                    </div>
+                </section>
+                
+                <!-- Group Section -->
+                <section id="group" class="content-section">
+                    <h2 class="section-title"><i class="fas fa-user-friends"></i> Grup Felipe</h2>
+                    <p>Bergabunglah dengan grup WhatsApp kami untuk informasi terbaru:</p>
+                    
+                    <ul class="group-list">
+                        <li class="group-item">
+                            <div class="group-title">𝗟𝗜𝗡𝗞 𝗚𝗕 𝗜𝗦𝗜𝗔𝗡 SUFZ [1]</div>
+                            <a href="https://chat.whatsapp.com/J8bfqyXHeyS2r9Pt6ocm5S" target="_blank" class="group-link">
+                                <i class="fab fa-whatsapp"></i> https://chat.whatsapp.com/J8bfqyXHeyS2r9Pt6ocm5S
+                            </a>
+                        </li>
+                        <li class="group-item">
+                            <div class="group-title">𝗟𝗜𝗡𝗞 𝗚𝗕 𝗜𝗦𝗜𝗔𝗡 SUFZ [2]</div>
+                            <a href="https://chat.whatsapp.com/CmEg9LHQVrn93nr2Z8YR5X" target="_blank" class="group-link">
+                                <i class="fab fa-whatsapp"></i> https://chat.whatsapp.com/CmEg9LHQVrn93nr2Z8YR5X
+                            </a>
+                        </li>
+                        <li class="group-item">
+                            <div class="group-title">𝗟𝗜𝗡𝗞 𝗚𝗕 𝗜𝗦𝗜𝗔𝗡 SUFZ [3]</div>
+                            <a href="https://chat.whatsapp.com/JWaO3UQJPSY5fMmeS2MQhg" target="_blank" class="group-link">
+                                <i class="fab fa-whatsapp"></i> https://chat.whatsapp.com/JWaO3UQJPSY5fMmeS2MQhg
+                            </a>
+                        </li>
+                        <li class="group-item">
+                            <div class="group-title">𝗟𝗜𝗡𝗞 𝗚𝗕 𝗜𝗦𝗜𝗔𝗡 SUFZ [4]</div>
+                            <a href="https://chat.whatsapp.com/GvkNS3OYGWaGE5cY98btiH" target="_blank" class="group-link">
+                                <i class="fab fa-whatsapp"></i> https://chat.whatsapp.com/GvkNS3OYGWaGE5cY98btiH
+                            </a>
+                        </li>
+                        <li class="group-item">
+                            <div class="group-title">𝗟𝗜𝗡𝗞 𝗚𝗕 𝗜𝗦𝗜𝗔𝗡 SUFZ [5]</div>
+                            <a href="https://chat.whatsapp.com/ElNkebzY7Br2FTPFdpdgye" target="_blank" class="group-link">
+                                <i class="fab fa-whatsapp"></i> https://chat.whatsapp.com/ElNkebzY7Br2FTPFdpdgye
+                            </a>
+                        </li>
+                        <li class="group-item">
+                            <div class="group-title">𝗟𝗜𝗡𝗞 𝗚𝗕 𝗜𝗦𝗜𝗔𝗡 SUFZ [6]</div>
+                            <a href="https://chat.whatsapp.com/K69h4h7LGho7hTaz30ze8G" target="_blank" class="group-link">
+                                <i class="fab fa-whatsapp"></i> https://chat.whatsapp.com/K69h4h7LGho7hTaz30ze8G
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+            </main>
+        </div>
+        
+        <footer>
+            <p>© 2023 <span class="felipe-brand">FELIPE PAYMENT</span>. All rights reserved.</p>
+            <p>Simple & Efficient Payment Solution</p>
+        </footer>
+    </div>
+
+    <script>
+        // Navigation functionality
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all buttons
+                document.querySelectorAll('.nav-btn').forEach(b => {
+                    b.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Hide all sections
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Show target section
+                const targetId = this.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+        
+        // Copy number functionality
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const number = this.getAttribute('data-number');
+                
+                // Copy to clipboard
+                navigator.clipboard.writeText(number).then(() => {
+                    // Show feedback
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
+                    this.style.backgroundColor = '#2ecc71';
+                    
+                    // Revert after 2 seconds
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.style.backgroundColor = '#2575fc';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Gagal menyalin: ', err);
+                    alert('Gagal menyalin nomor, silakan salin manual');
+                });
+            });
+        });
+        
+        // Image error handling
+        document.getElementById('qris-img').addEventListener('error', function() {
+            this.style.display = 'none';
+            const parent = this.parentElement;
+            parent.innerHTML = `
+                <div style="text-align: center; color: #666; padding: 20px;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #e74c3c; margin-bottom: 15px;"></i>
+                    <p><strong>qris.png</strong> tidak ditemukan!</p>
+                    <p style="font-size: 0.9rem; margin-top: 10px;">Pastikan file qris.png berada di folder yang sama dengan index.html</p>
+                </div>
+            `;
+        });
+        
+        document.getElementById('rules-img').addEventListener('erro
